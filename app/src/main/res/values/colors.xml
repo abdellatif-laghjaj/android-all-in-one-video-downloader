@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="backgroundDarkColor">#1F1F1F</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="textColorSecondary">#E1E1E1</color>
+
+    <!-- Color for Theme 1 -->
+    <color name="theme1ColorPrimary">#FF9800</color>
+    <color name="theme1ColorPrimaryDark">#FF9800</color>
+    <color name="theme1ColorAccent">#FFEB3B</color>
+
+    <!-- Color for Theme 2 -->
+    <color name="theme2ColorPrimary">#00BCD4</color>
+    <color name="theme2ColorPrimaryDark">#00BCD4</color>
+    <color name="theme2ColorAccent">#FFEB3B</color>
+
+    <!-- Color for Theme 3 -->
+    <color name="theme3ColorPrimary">#4CAF50</color>
+    <color name="theme3ColorPrimaryDark">#4CAF50</color>
+    <color name="theme3ColorAccent">#FFEB3B</color>
+
+    <!-- Color for Theme 4 -->
+    <color name="theme4ColorPrimary">#F44336</color>
+    <color name="theme4ColorPrimaryDark">#F44336</color>
+    <color name="theme4ColorAccent">#FFEB3B</color>
+
+    <!-- Color for Theme 5 -->
+    <color name="theme5ColorPrimary">#3F51B5</color>
+    <color name="theme5ColorPrimaryDark">#3F51B5</color>
+    <color name="theme5ColorAccent">#FFEB3B</color>
+</resources>

@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Download Any Video</string>
+    <string name="btn_streaming_example">play a video</string>
+    <string name="btn_downloading_example">download a video</string>
+    <string name="btn_command_example">Custom Command Example</string>
+    <string name="btn_update">Update yt-dlp</string>
+    <string name="btn_start_stream">Start Playing</string>
+    <string name="btn_start_download">Start Download</string>
+    <string name="url_hint">Paste Video URL Here…</string>
+    <string name="btn_run_command">Run Command</string>
+    <string name="command_hint">enter command here</string>
+    <string name="url_error">enter a valid url</string>
+    <string name="command_error">enter a valid command</string>
+    <string name="start">Do the thing</string>
+    <string name="example_command">Example command: --extract-audio --audio-format mp3 -o /sdcard/Download/youtubedl-android/%(title)s.%(ext)s https://www.youtube.com/watch?v=dQw4w9WgXcQ</string>
+    <string name="download_start">Starting Download</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="command_start">Starting Command</string>
+    <string name="command_complete">Command Complete</string>
+    <string name="command_failed">Command Failed</string>
+    <string name="use_config_file">Use Config File?</string>
+    <string name="app_version">version 0.0.1</string>
+    <string name="small_title">Youtube, Facebook, Instagram and more...</string>
+    <string name="copyright">copyright ©2022. All rights reserved</string>
+    <string name="clear_input">clear input</string>
+    <string name="about_message">All in one video downloader is a video utility app,That you can use to download videos from social media apps.\nFor example you can download youtube, facebook, instagram and pinterest videos.\nOur app user Youtube-dl library to download videos.</string>
+    <string name="developer_name">Abdellatif Laghjaj</string>
+    <string name="developer_email">abdelatiflaghjaj@gmail.com</string>
+    <string name="privacy_policy_url">https://pages.flycricket.io/download-any-video/privacy.html</string>
+    <string name="more_apps_url">https://play.google.com/store/apps/dev?id=5417228408982511692</string>
+</resources>
