@@ -13,7 +13,8 @@ An android app based on android-dl library to download any video from the intern
 
 # Contributors
 <h4>ABDELLATIF LAGHJAJ</h4>
-[![Abdellatif's GitHub stats](https://github-readme-stats.vercel.app/api?username=abdellatif-laghjaj&count_private=true&show_icons=true&theme=react)](https://github.com/omarlamin01/Dairy-Farm-Management-System)
+
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=abdellatif-laghjaj&count_private=true&show_icons=true&theme=react)](https://github.com/omarlamin01/Dairy-Farm-Management-System)
 
 # Screenshots
 <p>
