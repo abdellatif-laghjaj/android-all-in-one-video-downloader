@@ -27,3 +27,6 @@ An android app based on android-dl library to download any video from the intern
   <img src="https://user-images.githubusercontent.com/79521157/200933218-580c5932-f533-4dfb-a084-2d8b7db68f9a.png" width="300px"/>
 </p>
 <img src="https://user-images.githubusercontent.com/79521157/200933220-55c02a4e-a7a4-4578-b884-fa7d7a294dbb.png" width="300px"/>
+
+# Credits
+<a href="https://github.com/ytdl-org/youtube-dl"> youtube dl </a>
