@@ -16,9 +16,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.abdellatif.youtubedl_android.DownloadProgressCallback;
-import com.abdellatif.youtubedl_android.YoutubeDL;
-import com.abdellatif.youtubedl_android.YoutubeDLRequest;
+
+import com.yausername.youtubedl_android.DownloadProgressCallback;
+import com.yausername.youtubedl_android.YoutubeDL;
+import com.yausername.youtubedl_android.YoutubeDLRequest;
 
 import java.util.Collections;
 import java.util.regex.Matcher;
