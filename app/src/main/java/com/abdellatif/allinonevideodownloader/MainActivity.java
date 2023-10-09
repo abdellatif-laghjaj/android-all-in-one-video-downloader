@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         initListeners();
         btnUpdate.setVisibility(View.GONE);
+        updateYoutubeDL();
     }
 
     @Override
