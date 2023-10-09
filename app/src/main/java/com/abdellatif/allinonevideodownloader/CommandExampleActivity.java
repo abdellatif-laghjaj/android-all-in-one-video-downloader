@@ -119,7 +119,7 @@ public class CommandExampleActivity extends AppCompatActivity implements View.On
         showStart();
 
         running = true;
-        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, callback))
+        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, callback.toString()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(youtubeDLResponse -> {

@@ -56,8 +56,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
 
-    implementation "com.github.yausername.youtubedl-android:library:3a0252d88b4ae573068c63c3d08fc52c66102d55"
-    implementation "com.github.yausername.youtubedl-android:ffmpeg:3a0252d88b4ae573068c63c3d08fc52c66102d55"
+    implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
     implementation "com.devbrackets.android:exomedia:4.3.0"
