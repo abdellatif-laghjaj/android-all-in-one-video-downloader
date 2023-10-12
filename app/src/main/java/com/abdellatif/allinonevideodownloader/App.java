@@ -4,9 +4,10 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.abdellatif.ffmpeg.FFmpeg;
-import com.abdellatif.youtubedl_android.YoutubeDL;
-import com.abdellatif.youtubedl_android.YoutubeDLException;
+
+import com.yausername.ffmpeg.FFmpeg;
+import com.yausername.youtubedl_android.YoutubeDL;
+import com.yausername.youtubedl_android.YoutubeDLException;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -15,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
-import com.abdellatif.youtubedl_android.YoutubeDL;
-import com.abdellatif.youtubedl_android.YoutubeDLRequest;
+import com.yausername.youtubedl_android.YoutubeDL;
+import com.yausername.youtubedl_android.YoutubeDLRequest;
 
 import java.util.Objects;
 

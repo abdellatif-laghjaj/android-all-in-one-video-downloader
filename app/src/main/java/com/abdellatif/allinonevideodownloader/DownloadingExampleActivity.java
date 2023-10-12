@@ -18,14 +18,14 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.abdellatif.youtubedl_android.DownloadProgressCallback;
-import com.abdellatif.youtubedl_android.YoutubeDL;
-import com.abdellatif.youtubedl_android.YoutubeDLRequest;
+
+import com.yausername.youtubedl_android.DownloadProgressCallback;
+import com.yausername.youtubedl_android.YoutubeDL;
+import com.yausername.youtubedl_android.YoutubeDLRequest;
 
 import java.io.File;
 
@@ -35,6 +35,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function3;
 
 
 public class DownloadingExampleActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,17 +49,22 @@ public class DownloadingExampleActivity extends AppCompatActivity implements Vie
     private TextView tvCommandOutput;
     private ProgressBar pbLoading;
 
+
     private boolean downloading = false;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private final DownloadProgressCallback callback = new DownloadProgressCallback() {
+    Function3<Float, Long, String, Unit> callback = new Function3<Float, Long, String, kotlin.Unit>() {
         @Override
-        public void onProgressUpdate(float progress, long etaInSeconds, String line) {
-            runOnUiThread(() -> {
-                        progressBar.setProgress((int) progress);
-                        tvDownloadStatus.setText(line);
-                    }
-            );
+        public Unit invoke(Float aFloat, Long aLong, String s) {
+            int intValue = Math.round(aFloat); // Rounds to the nearest integer
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                      progressBar.setProgress(intValue);
+                      tvDownloadStatus.setText(s);
+                }
+            });
+            return null;
         }
     };
 
@@ -133,7 +140,7 @@ public class DownloadingExampleActivity extends AppCompatActivity implements Vie
         showStart();
 
         downloading = true;
-        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, callback))
+        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, (String) null,  callback))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(youtubeDLResponse -> {

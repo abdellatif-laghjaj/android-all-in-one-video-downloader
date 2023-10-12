@@ -24,7 +24,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -48,8 +49,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":library")
-    implementation project(":ffmpeg")
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
@@ -57,6 +56,10 @@ dependencies {
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
+
+    implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
     implementation "com.devbrackets.android:exomedia:4.3.0"
