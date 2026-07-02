@@ -80,8 +80,14 @@ fun DownloadsScreen(vm: AppViewModel) {
                 .padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.End
         ) {
-            TextButton(onClick = { vm.clearCompleted() }) { Text("Clear completed") }
-            TextButton(onClick = { vm.clearAll() }) { Text("Clear all") }
+            TextButton(
+                onClick = { vm.clearCompleted() },
+                colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
+            ) { Text("Clear completed") }
+            TextButton(
+                onClick = { vm.clearAll() },
+                colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
+            ) { Text("Clear all") }
         }
         if (filtered.isEmpty()) {
             Text(

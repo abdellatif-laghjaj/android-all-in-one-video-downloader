@@ -12,15 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentPaste
-import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,8 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.abdellatif.clipsave.R
 import com.abdellatif.clipsave.data.model.DownloadFormat
 import com.abdellatif.clipsave.data.model.Platform
 import com.abdellatif.clipsave.ui.AppViewModel
@@ -73,15 +72,13 @@ fun PasteUrlScreen(vm: AppViewModel) {
                     label = { Text("Media URL") },
                     placeholder = { Text("https://…") },
                     singleLine = false,
-                    supportingText = platform?.let { { Text("Detected: ${it.displayName}") } }
+                    supportingText = platform?.let { { Text("Detected: ${it.displayName}") } },
+                    trailingIcon = {
+                        IconButton(onClick = { url = readClipboard(context) }) {
+                            Icon(painterResource(R.drawable.paste), contentDescription = "Paste from clipboard")
+                        }
+                    }
                 )
-                OutlinedButton(
-                    onClick = { url = readClipboard(context) },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(Icons.Filled.ContentPaste, contentDescription = null)
-                    Text("  Paste from clipboard")
-                }
             }
         }
 
@@ -109,7 +106,7 @@ fun PasteUrlScreen(vm: AppViewModel) {
             enabled = url.isNotBlank(),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Icon(Icons.Filled.Download, contentDescription = null)
+            Icon(painterResource(R.drawable.download), contentDescription = null)
             Text("  Download")
         }
 

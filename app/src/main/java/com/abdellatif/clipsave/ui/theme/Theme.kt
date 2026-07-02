@@ -10,31 +10,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val Brand = Color(0xFF3D5AFE)
-private val BrandDark = Color(0xFF8C9EFF)
+private val Primary = Color(0xFFFFB703)
+private val Secondary = Color(0xFFFB8500)
 
 private val LightColors = lightColorScheme(
-    primary = Brand,
-    secondary = Color(0xFF5C6BC0),
-    tertiary = Color(0xFF00ACC1)
+    primary = Primary,
+    onPrimary = Color.Black,
+    primaryContainer = Primary,
+    onPrimaryContainer = Color.Black,
+    secondary = Secondary,
+    onSecondary = Color.Black,
+    secondaryContainer = Primary,
+    onSecondaryContainer = Color.Black
 )
 
 private val DarkColors = darkColorScheme(
-    primary = BrandDark,
-    secondary = Color(0xFF7986CB),
-    tertiary = Color(0xFF4DD0E1)
+    primary = Primary,
+    onPrimary = Color.Black,
+    primaryContainer = Primary,
+    onPrimaryContainer = Color.Black,
+    secondary = Secondary,
+    onSecondary = Color.Black,
+    secondaryContainer = Primary,
+    onSecondaryContainer = Color.Black
 )
 
 @Composable
 fun ClipSaveTheme(
     darkTheme: Boolean,
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+
         darkTheme -> DarkColors
         else -> LightColors
     }
