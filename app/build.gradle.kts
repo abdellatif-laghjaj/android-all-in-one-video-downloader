@@ -13,8 +13,8 @@ android {
         applicationId = "com.abdellatif.clipsave"
         minSdk = 26
         targetSdk = 35
-        versionCode = 102
-        versionName = "1.0.2"
+        versionCode = 103
+        versionName = "2.0.0"
         vectorDrawables { useSupportLibrary = true }
         ndk {
             // yt-dlp ships native python/ffmpeg/aria2c binaries; cover real-world phones.
