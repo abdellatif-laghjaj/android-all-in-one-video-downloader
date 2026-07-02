@@ -1,11 +1,6 @@
 package com.abdellatif.clipsave.ui.navigation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentPaste
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -14,24 +9,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.abdellatif.clipsave.R
 import com.abdellatif.clipsave.ui.AppViewModel
 import com.abdellatif.clipsave.ui.downloads.DownloadsScreen
 import com.abdellatif.clipsave.ui.home.HomeScreen
 import com.abdellatif.clipsave.ui.paste.PasteUrlScreen
 import com.abdellatif.clipsave.ui.settings.SettingsScreen
 
-private enum class Tab(val route: String, val label: String, val icon: ImageVector) {
-    HOME("home", "Home", Icons.Filled.Home),
-    DOWNLOADS("downloads", "Downloads", Icons.Filled.Download),
-    PASTE("paste", "Paste URL", Icons.Filled.ContentPaste),
-    SETTINGS("settings", "Settings", Icons.Filled.Settings)
+private enum class Tab(val route: String, val label: String, val icon: Int) {
+    HOME("home", "Home", R.drawable.home),
+    DOWNLOADS("downloads", "Downloads", R.drawable.folder_donwloads),
+    PASTE("paste", "Paste URL", R.drawable.paste),
+    SETTINGS("settings", "Settings", R.drawable.settings)
 }
 
 @Composable
@@ -53,7 +49,7 @@ fun AppScaffold(vm: AppViewModel) {
                                 restoreState = true
                             }
                         },
-                        icon = { Icon(tab.icon, contentDescription = tab.label) },
+                        icon = { Icon(painterResource(tab.icon), contentDescription = tab.label) },
                         label = { Text(tab.label) }
                     )
                 }

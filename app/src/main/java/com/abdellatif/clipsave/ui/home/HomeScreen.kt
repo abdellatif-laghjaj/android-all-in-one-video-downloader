@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -21,8 +19,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.abdellatif.clipsave.R
 import com.abdellatif.clipsave.data.model.DownloadStatus
 import com.abdellatif.clipsave.ui.AppViewModel
 import com.abdellatif.clipsave.ui.components.DownloadRow
@@ -41,7 +41,7 @@ fun HomeScreen(vm: AppViewModel, onGoToPaste: () -> Unit) {
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = onGoToPaste,
-                icon = { Icon(Icons.Filled.Add, contentDescription = null) },
+                icon = { Icon(painterResource(R.drawable.plus), contentDescription = null) },
                 text = { Text("New") }
             )
         }

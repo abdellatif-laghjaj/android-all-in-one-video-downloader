@@ -133,8 +133,6 @@ fun SettingsScreen(vm: AppViewModel) {
                 modifier = Modifier.fillMaxWidth()) { Text("Source code") }
             OutlinedButton(onClick = { openUrl(context, "https://github.com/abdellatif-laghjaj/android-all-in-one-video-downloader/blob/main/LICENSE") },
                 modifier = Modifier.fillMaxWidth()) { Text("License") }
-            OutlinedButton(onClick = { openUrl(context, "https://github.com/omersusin/MediaGrab") },
-                modifier = Modifier.fillMaxWidth()) { Text("Original project") }
         }
     }
 }
