@@ -24,24 +24,44 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun OnboardingScreen(onDone: () -> Unit) {
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Icon(
             Icons.Filled.CloudDownload, contentDescription = null,
-            modifier = Modifier.size(96.dp).padding(top = 32.dp),
+            modifier = Modifier
+                .size(96.dp)
+                .padding(top = 32.dp),
             tint = MaterialTheme.colorScheme.primary
         )
-        Text("Welcome to ClipSave", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+        Text(
+            "Welcome to ClipSave",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
         Text(
             "Download images, video and audio from 1000+ sites straight to your Downloads folder. Free, open-source, no ads, no tracking.",
             style = MaterialTheme.typography.bodyMedium
         )
-        Feature("Paste or share any link", "Share a URL from any app, or paste it on the Paste tab.")
-        Feature("One-tap floating button", "Enable Accessibility to grab media while browsing social apps.")
-        Feature("Saved to /Download/ClipSave/", "Files land in your public Downloads via MediaStore — no extra permissions on Android 10+.")
-        Button(onClick = onDone, modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
+        Feature(
+            "Paste or share any link",
+            "Share a URL from any app, or paste it on the Paste tab."
+        )
+        Feature(
+            "One-tap floating button",
+            "Enable Accessibility to grab media while browsing social apps."
+        )
+        Feature(
+            "Saved to /Download/ClipSave/",
+            "Files land in your public Downloads via MediaStore — no extra permissions on Android 10+."
+        )
+        Button(onClick = onDone, modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)) {
             Text("Get started")
         }
     }
@@ -51,8 +71,16 @@ fun OnboardingScreen(onDone: () -> Unit) {
 private fun Feature(title: String, body: String) {
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
-            Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-            Text(body, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                title,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                body,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

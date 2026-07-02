@@ -1,5 +1,6 @@
 package com.abdellatif.clipsave.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,11 +29,15 @@ import androidx.compose.ui.unit.dp
 import com.abdellatif.clipsave.data.model.Download
 import com.abdellatif.clipsave.data.model.DownloadStatus
 
+@SuppressLint("DefaultLocale")
 fun formatBytes(bytes: Long): String {
     if (bytes <= 0) return "—"
     val units = arrayOf("B", "KB", "MB", "GB")
-    var v = bytes.toDouble(); var i = 0
-    while (v >= 1024 && i < units.lastIndex) { v /= 1024; i++ }
+    var v = bytes.toDouble();
+    var i = 0
+    while (v >= 1024 && i < units.lastIndex) {
+        v /= 1024; i++
+    }
     return String.format("%.1f %s", v, units[i])
 }
 
@@ -59,7 +64,9 @@ fun DownloadRow(
     onDelete: (String) -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 6.dp),
         shape = RoundedCornerShape(14.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
@@ -82,7 +89,9 @@ fun DownloadRow(
             if (item.status == DownloadStatus.DOWNLOADING || item.status == DownloadStatus.EXTRACTING) {
                 LinearProgressIndicator(
                     progress = { item.progress / 100f },
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
                 )
             }
             if (item.status == DownloadStatus.FAILED && !item.errorMessage.isNullOrBlank()) {
@@ -95,7 +104,9 @@ fun DownloadRow(
                 )
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
                 horizontalArrangement = Arrangement.End
             ) {
                 if (item.status == DownloadStatus.FAILED) {

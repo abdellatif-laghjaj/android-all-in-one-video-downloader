@@ -39,25 +39,33 @@ fun DownloadsScreen(vm: AppViewModel) {
 
     val filtered = downloads.filter { d ->
         (filter == null || d.status == filter) &&
-            (query.isBlank() || d.title.contains(query, true) || d.url.contains(query, true) ||
-                d.platform.displayName.contains(query, true))
+                (query.isBlank() || d.title.contains(query, true) || d.url.contains(query, true) ||
+                        d.platform.displayName.contains(query, true))
     }
 
     Column(Modifier.fillMaxSize()) {
         OutlinedTextField(
             value = query,
             onValueChange = { query = it },
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             label = { Text("Search downloads") },
             leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
             singleLine = true
         )
         Row(
-            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FilterChip(selected = filter == null, onClick = { filter = null }, label = { Text("All") })
+            FilterChip(
+                selected = filter == null,
+                onClick = { filter = null },
+                label = { Text("All") })
             DownloadStatus.entries.forEach { s ->
                 FilterChip(
                     selected = filter == s,
@@ -66,7 +74,12 @@ fun DownloadsScreen(vm: AppViewModel) {
                 )
             }
         }
-        Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.End) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
             TextButton(onClick = { vm.clearCompleted() }) { Text("Clear completed") }
             TextButton(onClick = { vm.clearAll() }) { Text("Clear all") }
         }

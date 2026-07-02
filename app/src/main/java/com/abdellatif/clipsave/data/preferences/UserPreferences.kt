@@ -31,8 +31,14 @@ class UserPreferences(private val context: Context) {
 
     val settings: Flow<Settings> = context.dataStore.data.map { p ->
         Settings(
-            themeMode = runCatching { ThemeMode.valueOf(p[Keys.THEME] ?: "SYSTEM") }.getOrDefault(ThemeMode.SYSTEM),
-            accessMode = runCatching { AccessMode.valueOf(p[Keys.ACCESS] ?: "NORMAL") }.getOrDefault(AccessMode.NORMAL),
+            themeMode = runCatching { ThemeMode.valueOf(p[Keys.THEME] ?: "SYSTEM") }.getOrDefault(
+                ThemeMode.SYSTEM
+            ),
+            accessMode = runCatching {
+                AccessMode.valueOf(
+                    p[Keys.ACCESS] ?: "NORMAL"
+                )
+            }.getOrDefault(AccessMode.NORMAL),
             onboardingDone = p[Keys.ONBOARDING] ?: false
         )
     }

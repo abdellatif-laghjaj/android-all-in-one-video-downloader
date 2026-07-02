@@ -6,6 +6,7 @@ import com.abdellatif.clipsave.data.model.Platform
 interface Extractor {
     val platform: Platform
     fun canHandle(url: String): Boolean
+
     /** @return at least one MediaInfo, or throws ExtractionException. */
     fun extract(url: String): List<MediaInfo>
 }

@@ -57,7 +57,7 @@ class FloatingButtonController(
         val lp = WindowManager.LayoutParams(
             sizePx, sizePx, type,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
@@ -65,8 +65,10 @@ class FloatingButtonController(
             y = (context.resources.displayMetrics.heightPixels * 0.4f).toInt()
         }
 
-        var startX = 0; var startY = 0
-        var touchX = 0f; var touchY = 0f
+        var startX = 0;
+        var startY = 0
+        var touchX = 0f;
+        var touchY = 0f
         var moved = false
 
         v.setOnTouchListener { _, e ->
@@ -77,19 +79,23 @@ class FloatingButtonController(
                     cancelFade(); v.animate().alpha(activeAlpha).setDuration(120).start()
                     true
                 }
+
                 MotionEvent.ACTION_MOVE -> {
-                    val dx = (e.rawX - touchX).toInt(); val dy = (e.rawY - touchY).toInt()
+                    val dx = (e.rawX - touchX).toInt();
+                    val dy = (e.rawY - touchY).toInt()
                     if (abs(dx) > 16 || abs(dy) > 16) moved = true
                     lp.x = startX + dx; lp.y = startY + dy
                     runCatching { wm.updateViewLayout(v, lp) }
                     true
                 }
+
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     if (!moved) onTap()
                     snapToEdge(v, lp)
                     scheduleFade(v)
                     true
                 }
+
                 else -> false
             }
         }
@@ -119,7 +125,9 @@ class FloatingButtonController(
         main.postDelayed(fadeRunnable!!, 1500)
     }
 
-    private fun cancelFade() { fadeRunnable?.let { main.removeCallbacks(it) } }
+    private fun cancelFade() {
+        fadeRunnable?.let { main.removeCallbacks(it) }
+    }
 
     fun hide() {
         cancelFade()

@@ -10,11 +10,11 @@ object HttpClient {
 
     const val DESKTOP_UA =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+                "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
     const val MOBILE_UA =
         "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 " +
-            "(KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
+                "(KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
 
     val client: OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)

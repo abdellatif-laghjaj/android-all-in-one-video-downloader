@@ -47,10 +47,17 @@ fun PasteUrlScreen(vm: AppViewModel) {
     val platform = remember(url) { if (url.isBlank()) null else Platform.fromUrl(url) }
 
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Text("Download media", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(
+            "Download media",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
         Text(
             "1000+ sites via the built-in yt-dlp engine. Paste a link and pick a quality.",
             style = MaterialTheme.typography.bodySmall,
@@ -68,14 +75,21 @@ fun PasteUrlScreen(vm: AppViewModel) {
                     singleLine = false,
                     supportingText = platform?.let { { Text("Detected: ${it.displayName}") } }
                 )
-                OutlinedButton(onClick = { url = readClipboard(context) }, modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(
+                    onClick = { url = readClipboard(context) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Icon(Icons.Filled.ContentPaste, contentDescription = null)
                     Text("  Paste from clipboard")
                 }
             }
         }
 
-        Text("Quality / format", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+        Text(
+            "Quality / format",
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold
+        )
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             DownloadFormat.entries.forEach { f ->
                 FilterChip(

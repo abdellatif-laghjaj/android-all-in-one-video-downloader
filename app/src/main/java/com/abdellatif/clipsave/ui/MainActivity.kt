@@ -55,9 +55,17 @@ class MainActivity : ComponentActivity() {
         val clip = readClipboardUrl()
         if (clip != null) {
             DownloadService.start(this, clip, DownloadFormat.BEST)
-            Toast.makeText(this, "Downloading from ${Platform.fromUrl(clip).displayName}…", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Downloading from ${Platform.fromUrl(clip).displayName}…",
+                Toast.LENGTH_LONG
+            ).show()
         } else {
-            Toast.makeText(this, "No link on clipboard. In the app tap ••• → Copy link, then tap the bubble again.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "No link on clipboard. In the app tap ••• → Copy link, then tap the bubble again.",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

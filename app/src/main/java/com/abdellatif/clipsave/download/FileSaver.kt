@@ -22,20 +22,28 @@ object FileSaver {
                 "webm" -> "video/webm"; "mkv" -> "video/x-matroska"; "mov" -> "video/quicktime"
                 else -> "video/mp4"
             }
+
             MediaType.AUDIO -> when (e) {
                 "mp3" -> "audio/mpeg"; "m4a", "aac" -> "audio/mp4"; "wav" -> "audio/wav"; "ogg" -> "audio/ogg"
                 else -> "audio/mpeg"
             }
+
             MediaType.IMAGE -> when (e) {
                 "png" -> "image/png"; "gif" -> "image/gif"; "webp" -> "image/webp"
                 else -> "image/jpeg"
             }
+
             MediaType.UNKNOWN -> "application/octet-stream"
         }
     }
 
     /** Copies [source] into the public Download/ClipSave folder; returns the saved Uri/path string. */
-    fun saveFile(context: Context, source: File, displayName: String, mediaType: MediaType): String {
+    fun saveFile(
+        context: Context,
+        source: File,
+        displayName: String,
+        mediaType: MediaType
+    ): String {
         val ext = source.extension.ifBlank { defaultExt(mediaType) }
         val safeName = sanitize(if (displayName.contains('.')) displayName else "$displayName.$ext")
         val mime = mimeFor(mediaType, ext)
@@ -47,7 +55,12 @@ object FileSaver {
         }
     }
 
-    private fun saveViaMediaStore(context: Context, source: File, name: String, mime: String): String {
+    private fun saveViaMediaStore(
+        context: Context,
+        source: File,
+        name: String,
+        mime: String
+    ): String {
         val resolver = context.contentResolver
         val collection = MediaStore.Downloads.EXTERNAL_CONTENT_URI
         val values = ContentValues().apply {
@@ -69,10 +82,14 @@ object FileSaver {
 
     private fun saveLegacy(source: File, name: String): String {
         @Suppress("DEPRECATION")
-        val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), SUBDIR)
+        val dir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            SUBDIR
+        )
         if (!dir.exists()) dir.mkdirs()
         val dest = uniqueFile(dir, name)
-        source.inputStream().use { input -> dest.outputStream().use { input.copyTo(it, 64 * 1024) } }
+        source.inputStream()
+            .use { input -> dest.outputStream().use { input.copyTo(it, 64 * 1024) } }
         return Uri.fromFile(dest).toString()
     }
 
@@ -94,5 +111,6 @@ object FileSaver {
     }
 
     private fun sanitize(name: String): String =
-        name.replace(Regex("[\\\\/:*?\"<>|]"), "_").take(180).ifBlank { "clipsave_${System.currentTimeMillis()}" }
+        name.replace(Regex("[\\\\/:*?\"<>|]"), "_").take(180)
+            .ifBlank { "clipsave_${System.currentTimeMillis()}" }
 }

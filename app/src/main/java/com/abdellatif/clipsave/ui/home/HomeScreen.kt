@@ -46,7 +46,9 @@ fun HomeScreen(vm: AppViewModel, onGoToPaste: () -> Unit) {
             )
         }
     ) { p ->
-        LazyColumn(Modifier.fillMaxSize().padding(p)) {
+        LazyColumn(Modifier
+            .fillMaxSize()
+            .padding(p)) {
             item {
                 Text(
                     "ClipSave",
@@ -54,7 +56,12 @@ fun HomeScreen(vm: AppViewModel, onGoToPaste: () -> Unit) {
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp)
                 )
-                Row(Modifier.fillMaxWidth().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     StatCard(Modifier.weight(1f), "Total", total.toString())
                     StatCard(Modifier.weight(1f), "Completed", completed.toString())
                     StatCard(Modifier.weight(1f), "Active", active.size.toString())
@@ -74,8 +81,16 @@ fun HomeScreen(vm: AppViewModel, onGoToPaste: () -> Unit) {
 private fun StatCard(modifier: Modifier, label: String, value: String) {
     Card(modifier) {
         Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(value, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

@@ -47,10 +47,17 @@ fun SettingsScreen(vm: AppViewModel) {
     var updating by remember { mutableStateOf(false) }
 
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Settings", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(
+            "Settings",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
 
         SettingsCard("Appearance") {
             Text("Theme", style = MaterialTheme.typography.bodyMedium)
@@ -71,7 +78,10 @@ fun SettingsScreen(vm: AppViewModel) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Text("Version: ${YtDlpEngine.ytdlpVersion ?: "initializing…"}", style = MaterialTheme.typography.bodySmall)
+            Text(
+                "Version: ${YtDlpEngine.ytdlpVersion ?: "initializing…"}",
+                style = MaterialTheme.typography.bodySmall
+            )
             OutlinedButton(
                 onClick = {
                     if (!updating) {
@@ -83,12 +93,21 @@ fun SettingsScreen(vm: AppViewModel) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (updating) {
-                    CircularProgressIndicator(Modifier.padding(end = 8.dp).size(18.dp), strokeWidth = 2.dp)
+                    CircularProgressIndicator(
+                        Modifier
+                            .padding(end = 8.dp)
+                            .size(18.dp),
+                        strokeWidth = 2.dp
+                    )
                     Text("Updating…")
                 } else Text("Update engine (yt-dlp)")
             }
             if (engineMsg.isNotBlank()) {
-                Text(engineMsg, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                Text(
+                    engineMsg,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }
 
@@ -108,31 +127,59 @@ fun SettingsScreen(vm: AppViewModel) {
                 }
             }
             HorizontalDivider()
-            Text("Shizuku: ${ShizukuHelper.statusText()}", style = MaterialTheme.typography.bodySmall)
+            Text(
+                "Shizuku: ${ShizukuHelper.statusText()}",
+                style = MaterialTheme.typography.bodySmall
+            )
             Text("Root: ${RootHelper.statusText()}", style = MaterialTheme.typography.bodySmall)
         }
 
         SettingsCard("Permissions") {
-            OutlinedButton(onClick = { openAppNotificationSettings(context) }, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = { openAppNotificationSettings(context) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Notification settings")
             }
-            OutlinedButton(onClick = { openAccessibilitySettings(context) }, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = { openAccessibilitySettings(context) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Accessibility (floating button)")
             }
-            OutlinedButton(onClick = { openOverlaySettings(context) }, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = { openOverlaySettings(context) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Display over other apps")
             }
         }
 
         SettingsCard("About") {
             Text("ClipSave v1.0.2", style = MaterialTheme.typography.bodyMedium)
-            Text("Free & open-source · MIT License · No ads, no telemetry.",
+            Text(
+                "Free & open-source · MIT License · No ads, no telemetry.",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-            OutlinedButton(onClick = { openUrl(context, "https://github.com/abdellatif-laghjaj/android-all-in-one-video-downloader") },
-                modifier = Modifier.fillMaxWidth()) { Text("Source code") }
-            OutlinedButton(onClick = { openUrl(context, "https://github.com/abdellatif-laghjaj/android-all-in-one-video-downloader/blob/main/LICENSE") },
-                modifier = Modifier.fillMaxWidth()) { Text("License") }
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            OutlinedButton(
+                onClick = {
+                    openUrl(
+                        context,
+                        "https://github.com/abdellatif-laghjaj/android-all-in-one-video-downloader"
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Source code") }
+            OutlinedButton(
+                onClick = {
+                    openUrl(
+                        context,
+                        "https://github.com/abdellatif-laghjaj/android-all-in-one-video-downloader/blob/main/LICENSE"
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("License") }
         }
     }
 }
@@ -141,7 +188,11 @@ fun SettingsScreen(vm: AppViewModel) {
 private fun SettingsCard(title: String, content: @Composable () -> Unit) {
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(
+                title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
             content()
         }
     }
@@ -162,6 +213,9 @@ private fun openAccessibilitySettings(context: Context) {
 }
 
 private fun openOverlaySettings(context: Context) {
-    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}"))
+    val intent = Intent(
+        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+        Uri.parse("package:${context.packageName}")
+    )
     runCatching { context.startActivity(intent) }
 }

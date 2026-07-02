@@ -12,5 +12,6 @@ object RootHelper {
         ok
     }.getOrDefault(false)
 
-    fun statusText(): String = if (isRootAvailable()) "Root access granted" else "Not rooted / denied"
+    fun statusText(): String =
+        if (isRootAvailable()) "Root access granted" else "Not rooted / denied"
 }

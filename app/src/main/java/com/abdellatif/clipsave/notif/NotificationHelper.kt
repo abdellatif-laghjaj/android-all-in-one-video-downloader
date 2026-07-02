@@ -40,7 +40,11 @@ object NotificationHelper {
         )
     }
 
-    fun progressNotification(context: Context, title: String, progress: Int): android.app.Notification {
+    fun progressNotification(
+        context: Context,
+        title: String,
+        progress: Int
+    ): android.app.Notification {
         ensureChannel(context)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle("Downloading")

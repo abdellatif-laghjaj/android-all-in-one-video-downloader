@@ -26,7 +26,10 @@ enum class Platform(val displayName: String, val hosts: List<String>) {
     YOUTUBE("YouTube", listOf("youtube.com", "youtu.be", "music.youtube.com", "m.youtube.com")),
     INSTAGRAM("Instagram", listOf("instagram.com", "instagr.am", "ddinstagram.com")),
     TIKTOK("TikTok", listOf("tiktok.com", "vm.tiktok.com", "vt.tiktok.com")),
-    TWITTER("X / Twitter", listOf("twitter.com", "x.com", "t.co", "fxtwitter.com", "vxtwitter.com")),
+    TWITTER(
+        "X / Twitter",
+        listOf("twitter.com", "x.com", "t.co", "fxtwitter.com", "vxtwitter.com")
+    ),
     REDDIT("Reddit", listOf("reddit.com", "redd.it", "old.reddit.com")),
     FACEBOOK("Facebook", listOf("facebook.com", "fb.watch", "fb.com", "m.facebook.com")),
     PINTEREST("Pinterest", listOf("pinterest.com", "pin.it")),

@@ -45,7 +45,8 @@ class DownloadService : Service() {
         val url = intent?.getStringExtra(EXTRA_URL)?.trim()
         val formatName = intent?.getStringExtra(EXTRA_FORMAT) ?: DownloadFormat.BEST.name
         val retryId = intent?.getStringExtra(EXTRA_RETRY_ID)
-        val format = runCatching { DownloadFormat.valueOf(formatName) }.getOrDefault(DownloadFormat.BEST)
+        val format =
+            runCatching { DownloadFormat.valueOf(formatName) }.getOrDefault(DownloadFormat.BEST)
         if (url.isNullOrBlank()) {
             stopIfIdle(); return START_NOT_STICKY
         }
@@ -61,7 +62,10 @@ class DownloadService : Service() {
         val baseType = if (format.isAudio) MediaType.AUDIO else MediaType.VIDEO
 
         var item = repo.get(id)?.copy(
-            status = DownloadStatus.EXTRACTING, progress = 0, errorMessage = null, mediaType = baseType
+            status = DownloadStatus.EXTRACTING,
+            progress = 0,
+            errorMessage = null,
+            mediaType = baseType
         ) ?: Download(
             id = id, url = url, platform = platform,
             status = DownloadStatus.EXTRACTING, mediaType = baseType
@@ -79,9 +83,18 @@ class DownloadService : Service() {
                 updateForeground(item.title.ifBlank { platform.displayName }, p)
             }
             val type = if (format.isAudio) MediaType.AUDIO else guessType(res.file.extension)
-            val savedUri = FileSaver.saveFile(this, res.file, res.title.ifBlank { defaultName(platform) }, type)
+            val savedUri = FileSaver.saveFile(
+                this,
+                res.file,
+                res.title.ifBlank { defaultName(platform) },
+                type
+            )
             res.file.parentFile?.deleteRecursively()
-            finishSuccess(item.copy(title = res.title, mediaType = type, fileName = res.file.name), savedUri, notifId)
+            finishSuccess(
+                item.copy(title = res.title, mediaType = type, fileName = res.file.name),
+                savedUri,
+                notifId
+            )
             true
         }.getOrElse {
             ytError = it.message
@@ -104,11 +117,19 @@ class DownloadService : Service() {
                     thumbnailUrl = media.thumbnailUrl
                 )
                 repo.upsert(item)
-                val temp = downloadToTemp(media.downloadUrl, media.suggestedExtension ?: extOf(media.mediaType)) { p ->
+                val temp = downloadToTemp(
+                    media.downloadUrl,
+                    media.suggestedExtension ?: extOf(media.mediaType)
+                ) { p ->
                     item = item.copy(progress = p); repo.upsert(item)
                     updateForeground(item.title.ifBlank { platform.displayName }, p)
                 }
-                val saved = FileSaver.saveFile(this, temp, item.title.ifBlank { defaultName(platform) }, media.mediaType)
+                val saved = FileSaver.saveFile(
+                    this,
+                    temp,
+                    item.title.ifBlank { defaultName(platform) },
+                    media.mediaType
+                )
                 temp.delete()
                 finishSuccess(item.copy(fileName = temp.name), saved, notifId)
             }.onFailure { err ->
@@ -131,12 +152,16 @@ class DownloadService : Service() {
             body.byteStream().use { input ->
                 temp.outputStream().use { output ->
                     val buf = ByteArray(64 * 1024)
-                    var read: Int; var done = 0L; var lastPct = -1
+                    var read: Int;
+                    var done = 0L;
+                    var lastPct = -1
                     while (input.read(buf).also { read = it } != -1) {
                         output.write(buf, 0, read); done += read
                         if (total > 0) {
                             val pct = ((done * 100) / total).toInt()
-                            if (pct != lastPct) { lastPct = pct; onProgress(pct) }
+                            if (pct != lastPct) {
+                                lastPct = pct; onProgress(pct)
+                            }
                         }
                     }
                 }
@@ -151,21 +176,33 @@ class DownloadService : Service() {
             localUri = uri, completedAt = System.currentTimeMillis(), errorMessage = null
         )
         repo.upsert(done)
-        NotificationHelper.notifyDone(this, notifId, done.title.ifBlank { done.platform.displayName },
-            true, "Saved to Download/${FileSaver.SUBDIR}/")
+        NotificationHelper.notifyDone(
+            this, notifId, done.title.ifBlank { done.platform.displayName },
+            true, "Saved to Download/${FileSaver.SUBDIR}/"
+        )
     }
 
     private fun finishFailure(base: Download, message: String, notifId: Int) {
         val failed = base.copy(status = DownloadStatus.FAILED, errorMessage = message)
         repo.upsert(failed)
-        NotificationHelper.notifyDone(this, notifId, failed.title.ifBlank { failed.platform.displayName }, false, message)
+        NotificationHelper.notifyDone(
+            this,
+            notifId,
+            failed.title.ifBlank { failed.platform.displayName },
+            false,
+            message
+        )
     }
 
     private fun updateForeground(title: String, progress: Int) {
         runCatching {
             val n = NotificationHelper.progressNotification(this, title, progress)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startForeground(NotificationHelper.FOREGROUND_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                startForeground(
+                    NotificationHelper.FOREGROUND_ID,
+                    n,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                )
             } else {
                 startForeground(NotificationHelper.FOREGROUND_ID, n)
             }
@@ -190,7 +227,9 @@ class DownloadService : Service() {
     }
 
     private fun defaultName(platform: Platform) =
-        "${platform.displayName.lowercase().replace(Regex("[^a-z0-9]"), "")}_${System.currentTimeMillis()}"
+        "${
+            platform.displayName.lowercase().replace(Regex("[^a-z0-9]"), "")
+        }_${System.currentTimeMillis()}"
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -199,13 +238,20 @@ class DownloadService : Service() {
         const val EXTRA_FORMAT = "extra_format"
         const val EXTRA_RETRY_ID = "extra_retry_id"
 
-        fun start(context: Context, url: String, format: DownloadFormat = DownloadFormat.BEST, retryId: String? = null) {
+        fun start(
+            context: Context,
+            url: String,
+            format: DownloadFormat = DownloadFormat.BEST,
+            retryId: String? = null
+        ) {
             val intent = Intent(context, DownloadService::class.java).apply {
                 putExtra(EXTRA_URL, url)
                 putExtra(EXTRA_FORMAT, format.name)
                 if (retryId != null) putExtra(EXTRA_RETRY_ID, retryId)
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) context.startForegroundService(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) context.startForegroundService(
+                intent
+            )
             else context.startService(intent)
         }
     }

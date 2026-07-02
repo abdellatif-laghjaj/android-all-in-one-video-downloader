@@ -74,7 +74,10 @@ private fun ConfirmDialog(url: String, onDownload: (DownloadFormat) -> Unit, onC
         },
         dismissButton = {
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                OutlinedButton(onClick = { onDownload(DownloadFormat.AUDIO_M4A) }, modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(
+                    onClick = { onDownload(DownloadFormat.AUDIO_M4A) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Icon(Icons.Filled.MusicNote, contentDescription = null)
                     Text("  Audio only")
                 }

@@ -1,6 +1,7 @@
 package com.abdellatif.clipsave.access
 
 import android.accessibilityservice.AccessibilityService
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
@@ -14,6 +15,7 @@ import com.abdellatif.clipsave.ui.MainActivity
  * Otherwise (Instagram/TikTok hide URLs) it opens ClipSave in "quick grab" mode, which reads
  * the link you copied via the app's ••• -> "Copy link".
  */
+@SuppressLint("AccessibilityPolicy")
 class MediaAccessibilityService : AccessibilityService() {
 
     private var controller: FloatingButtonController? = null
@@ -46,7 +48,8 @@ class MediaAccessibilityService : AccessibilityService() {
             DownloadService.start(this, url)
             Toast.makeText(this, "ClipSave: downloading…", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Opening ClipSave — grabbing the copied link…", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Opening ClipSave — grabbing the copied link…", Toast.LENGTH_SHORT)
+                .show()
             val launch = Intent(this, MainActivity::class.java).apply {
                 action = MainActivity.ACTION_QUICK_GRAB
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)

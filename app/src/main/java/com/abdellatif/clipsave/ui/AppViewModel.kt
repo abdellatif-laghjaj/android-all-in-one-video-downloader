@@ -24,7 +24,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     val downloads = repo.downloads
     val settings = prefs.settings.stateIn(viewModelScope, SharingStarted.Eagerly, Settings())
 
-    fun download(url: String, format: com.abdellatif.clipsave.data.model.DownloadFormat = com.abdellatif.clipsave.data.model.DownloadFormat.BEST) {
+    fun download(
+        url: String,
+        format: com.abdellatif.clipsave.data.model.DownloadFormat = com.abdellatif.clipsave.data.model.DownloadFormat.BEST
+    ) {
         val clean = url.trim()
         if (clean.isBlank()) return
         DownloadService.start(getApplication(), clean, format)
@@ -53,15 +56,20 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun setAccessMode(mode: AccessMode) = viewModelScope.launch { prefs.setAccessMode(mode) }
     fun completeOnboarding() = viewModelScope.launch { prefs.setOnboardingDone(true) }
 
-    val activeCount get() = downloads.value.count {
-        it.status == DownloadStatus.DOWNLOADING || it.status == DownloadStatus.EXTRACTING || it.status == DownloadStatus.QUEUED
-    }
+    val activeCount
+        get() = downloads.value.count {
+            it.status == DownloadStatus.DOWNLOADING || it.status == DownloadStatus.EXTRACTING || it.status == DownloadStatus.QUEUED
+        }
 
     companion object {
         val Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>, extras: androidx.lifecycle.viewmodel.CreationExtras): T {
-                val app = extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: androidx.lifecycle.viewmodel.CreationExtras
+            ): T {
+                val app =
+                    extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
                 return AppViewModel(app) as T
             }
         }

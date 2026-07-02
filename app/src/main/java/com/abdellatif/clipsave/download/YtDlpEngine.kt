@@ -17,11 +17,15 @@ object YtDlpEngine {
 
     private const val TAG = "YtDlpEngine"
 
-    @Volatile private var initialized = false
-    @Volatile private var updated = false
-    @Volatile var lastInitError: String? = null
+    @Volatile
+    private var initialized = false
+    @Volatile
+    private var updated = false
+    @Volatile
+    var lastInitError: String? = null
         private set
-    @Volatile var ytdlpVersion: String? = null
+    @Volatile
+    var ytdlpVersion: String? = null
         private set
 
     fun ensureInit(context: Context): Boolean {
@@ -34,7 +38,9 @@ object YtDlpEngine {
                 runCatching { Aria2c.getInstance().init(context.applicationContext) }
                 initialized = true
                 lastInitError = null
-                ytdlpVersion = runCatching { YoutubeDL.getInstance().version(context.applicationContext) }.getOrNull()
+                ytdlpVersion = runCatching {
+                    YoutubeDL.getInstance().version(context.applicationContext)
+                }.getOrNull()
                 true
             } catch (t: Throwable) {
                 lastInitError = t.message
@@ -52,7 +58,9 @@ object YtDlpEngine {
             val status = YoutubeDL.getInstance()
                 .updateYoutubeDL(context.applicationContext, YoutubeDL.UpdateChannel.STABLE)
             updated = true
-            ytdlpVersion = runCatching { YoutubeDL.getInstance().version(context.applicationContext) }.getOrNull()
+            ytdlpVersion = runCatching {
+                YoutubeDL.getInstance().version(context.applicationContext)
+            }.getOrNull()
             when (status) {
                 YoutubeDL.UpdateStatus.DONE -> "Updated to yt-dlp ${ytdlpVersion ?: "latest"}"
                 YoutubeDL.UpdateStatus.ALREADY_UP_TO_DATE -> "Already up to date (yt-dlp ${ytdlpVersion ?: "?"})"
@@ -101,7 +109,10 @@ object YtDlpEngine {
             addOption("-f", formatSelector(format))
             if (format.isAudio) {
                 addOption("-x")
-                addOption("--audio-format", if (format == DownloadFormat.AUDIO_MP3) "mp3" else "m4a")
+                addOption(
+                    "--audio-format",
+                    if (format == DownloadFormat.AUDIO_MP3) "mp3" else "m4a"
+                )
             } else {
                 addOption("--merge-output-format", "mp4")
             }

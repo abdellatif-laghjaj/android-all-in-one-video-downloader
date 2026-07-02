@@ -8,8 +8,14 @@ object MetaScraper {
 
     private fun meta(html: String, property: String): String? {
         val patterns = listOf(
-            Regex("""<meta[^>]+(?:property|name)=["']$property["'][^>]+content=["']([^"']+)["']""", RegexOption.IGNORE_CASE),
-            Regex("""<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']$property["']""", RegexOption.IGNORE_CASE)
+            Regex(
+                """<meta[^>]+(?:property|name)=["']$property["'][^>]+content=["']([^"']+)["']""",
+                RegexOption.IGNORE_CASE
+            ),
+            Regex(
+                """<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']$property["']""",
+                RegexOption.IGNORE_CASE
+            )
         )
         for (p in patterns) {
             val m = p.find(html)?.groupValues?.getOrNull(1)
@@ -23,7 +29,8 @@ object MetaScraper {
         .replace("&lt;", "<").replace("&gt;", ">").replace("&#x2F;", "/").trim()
 
     fun scrape(url: String, mobile: Boolean = false): List<MediaInfo> {
-        val html = HttpClient.getString(url, mobile) ?: throw ExtractionException("Could not load page.")
+        val html =
+            HttpClient.getString(url, mobile) ?: throw ExtractionException("Could not load page.")
         return fromHtml(html)
     }
 
