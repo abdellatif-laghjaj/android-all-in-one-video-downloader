@@ -38,5 +38,5 @@ fun ClipSaveTheme(
         darkTheme -> DarkColors
         else -> LightColors
     }
-    MaterialTheme(colorScheme = colorScheme, typography = androidx.compose.material3.Typography(), content = content)
+    MaterialTheme(colorScheme = colorScheme, typography = ClipSaveTypography, content = content)
 }
