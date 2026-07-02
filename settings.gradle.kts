@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MediaGrab"
+rootProject.name = "ClipSave"
 include(":app")

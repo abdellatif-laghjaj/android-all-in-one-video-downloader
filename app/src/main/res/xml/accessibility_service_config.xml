@@ -7,4 +7,4 @@
     android:description="@string/accessibility_description"
     android:notificationTimeout="200"
     android:packageNames="com.instagram.android,com.zhiliaoapp.musically,com.ss.android.ugc.trill,com.twitter.android,com.facebook.katana,com.pinterest"
-    android:settingsActivity="media.grab.os.ui.MainActivity" />
+    android:settingsActivity="com.abdellatif.clipsave.ui.MainActivity" />

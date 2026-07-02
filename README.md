@@ -1,13 +1,13 @@
-# MediaGrab
+# ClipSave
 
-![GitHub Downloads](https://img.shields.io/github/downloads/omersusin/MediaGrab/total.svg)
+![GitHub Downloads](https://img.shields.io/github/downloads/abdellatif-laghjaj/android-all-in-one-video-downloader/total.svg)
 
 **Free, open-source media downloader for Android.** Grab images, video, and audio from
 1000+ websites — YouTube, Instagram, TikTok, X/Twitter, Reddit, Facebook, Pinterest,
 Twitch, Vimeo, SoundCloud, Bilibili, and many more — straight to
-`/storage/emulated/0/Download/MediaGrab/`.
+`/storage/emulated/0/Download/ClipSave/`.
 
-No ads. No telemetry. No tracking. GPL-3.0.
+No ads. No telemetry. No tracking. MIT licensed.
 
 ---
 
@@ -16,7 +16,7 @@ No ads. No telemetry. No tracking. GPL-3.0.
 - **1000+ sites** via a bundled **yt-dlp** engine (with **ffmpeg** merging + **aria2c**).
 - **Metadata-scraper fallback** for pure image posts (Open Graph / Twitter cards).
 - **Reddit** handled natively through the public JSON API.
-- **Share to MediaGrab** — share any link from any app to download it.
+- **Share to ClipSave** — share any link from any app to download it.
 - **One-tap floating button** (Accessibility) while browsing Instagram / TikTok / X.
 - **Audio-only** extraction (m4a) for any supported video.
 - **Foreground service** downloads with live progress notifications.
@@ -30,9 +30,9 @@ No ads. No telemetry. No tracking. GPL-3.0.
 The app builds on **GitHub Actions** automatically on every push to `main`
 (`.github/workflows/android.yml`). It produces:
 
-- `MediaGrab-debug` — installable debug APK (always).
-- `MediaGrab-release-unsigned` — when no signing secrets are set.
-- `MediaGrab-release-signed` — when keystore secrets are configured.
+- `ClipSave-debug` — installable debug APK (always).
+- `ClipSave-release-unsigned` — when no signing secrets are set.
+- `ClipSave-release-signed` — when keystore secrets are configured.
 
 ### Local build
 
@@ -53,6 +53,10 @@ Requirements: JDK 17, Android SDK 35.
 
 ## License
 
-GPL-3.0 — see [LICENSE](LICENSE).
+ClipSave is released under the [MIT License](LICENSE).
+
+## Credits
+
+ClipSave is based on the original [MediaGrab project](https://github.com/omersusin/MediaGrab).
 
 > Personal use. Respect the terms of service and copyright of the platforms you download from.

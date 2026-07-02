@@ -1,4 +1,4 @@
-name: MediaGrab CI
+name: ClipSave CI
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: MediaGrab-debug
+          name: ClipSave-debug
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
@@ -65,7 +65,7 @@ jobs:
         if: steps.keycheck.outputs.available != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: MediaGrab-release-unsigned
+          name: ClipSave-release-unsigned
           path: app/build/outputs/apk/release/*.apk
           if-no-files-found: error
 
@@ -73,5 +73,5 @@ jobs:
         if: steps.sign.outputs.signedReleaseFile != ''
         uses: actions/upload-artifact@v4
         with:
-          name: MediaGrab-release-signed
+          name: ClipSave-release-signed
           path: ${{ steps.sign.outputs.signedReleaseFile }}

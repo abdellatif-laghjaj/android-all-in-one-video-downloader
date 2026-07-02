@@ -1,0 +1,98 @@
+package com.abdellatif.clipsave.download
+
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import com.abdellatif.clipsave.data.model.MediaType
+import java.io.File
+import java.io.FileInputStream
+
+/** Saves media into /storage/emulated/0/Download/ClipSave/ using MediaStore (API 29+) or legacy IO. */
+object FileSaver {
+
+    const val SUBDIR = "ClipSave"
+
+    fun mimeFor(mediaType: MediaType, ext: String): String {
+        val e = ext.lowercase().removePrefix(".")
+        return when (mediaType) {
+            MediaType.VIDEO -> when (e) {
+                "webm" -> "video/webm"; "mkv" -> "video/x-matroska"; "mov" -> "video/quicktime"
+                else -> "video/mp4"
+            }
+            MediaType.AUDIO -> when (e) {
+                "mp3" -> "audio/mpeg"; "m4a", "aac" -> "audio/mp4"; "wav" -> "audio/wav"; "ogg" -> "audio/ogg"
+                else -> "audio/mpeg"
+            }
+            MediaType.IMAGE -> when (e) {
+                "png" -> "image/png"; "gif" -> "image/gif"; "webp" -> "image/webp"
+                else -> "image/jpeg"
+            }
+            MediaType.UNKNOWN -> "application/octet-stream"
+        }
+    }
+
+    /** Copies [source] into the public Download/ClipSave folder; returns the saved Uri/path string. */
+    fun saveFile(context: Context, source: File, displayName: String, mediaType: MediaType): String {
+        val ext = source.extension.ifBlank { defaultExt(mediaType) }
+        val safeName = sanitize(if (displayName.contains('.')) displayName else "$displayName.$ext")
+        val mime = mimeFor(mediaType, ext)
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            saveViaMediaStore(context, source, safeName, mime)
+        } else {
+            saveLegacy(source, safeName)
+        }
+    }
+
+    private fun saveViaMediaStore(context: Context, source: File, name: String, mime: String): String {
+        val resolver = context.contentResolver
+        val collection = MediaStore.Downloads.EXTERNAL_CONTENT_URI
+        val values = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, name)
+            put(MediaStore.Downloads.MIME_TYPE, mime)
+            put(MediaStore.Downloads.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/$SUBDIR")
+            put(MediaStore.Downloads.IS_PENDING, 1)
+        }
+        val uri: Uri = resolver.insert(collection, values)
+            ?: throw IllegalStateException("Could not create MediaStore entry.")
+        resolver.openOutputStream(uri)?.use { out ->
+            FileInputStream(source).use { it.copyTo(out, 64 * 1024) }
+        } ?: throw IllegalStateException("Could not open output stream.")
+        values.clear()
+        values.put(MediaStore.Downloads.IS_PENDING, 0)
+        resolver.update(uri, values, null, null)
+        return uri.toString()
+    }
+
+    private fun saveLegacy(source: File, name: String): String {
+        @Suppress("DEPRECATION")
+        val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), SUBDIR)
+        if (!dir.exists()) dir.mkdirs()
+        val dest = uniqueFile(dir, name)
+        source.inputStream().use { input -> dest.outputStream().use { input.copyTo(it, 64 * 1024) } }
+        return Uri.fromFile(dest).toString()
+    }
+
+    private fun uniqueFile(dir: File, name: String): File {
+        var f = File(dir, name)
+        if (!f.exists()) return f
+        val base = name.substringBeforeLast('.', name)
+        val ext = name.substringAfterLast('.', "")
+        var i = 1
+        while (f.exists()) {
+            f = File(dir, if (ext.isBlank()) "$base ($i)" else "$base ($i).$ext")
+            i++
+        }
+        return f
+    }
+
+    private fun defaultExt(mediaType: MediaType): String = when (mediaType) {
+        MediaType.VIDEO -> "mp4"; MediaType.AUDIO -> "m4a"; MediaType.IMAGE -> "jpg"; MediaType.UNKNOWN -> "bin"
+    }
+
+    private fun sanitize(name: String): String =
+        name.replace(Regex("[\\\\/:*?\"<>|]"), "_").take(180).ifBlank { "clipsave_${System.currentTimeMillis()}" }
+}

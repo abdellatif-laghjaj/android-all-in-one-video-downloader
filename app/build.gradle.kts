@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "media.grab.os"
+    namespace = "com.abdellatif.clipsave"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "media.grab.os"
+        applicationId = "com.abdellatif.clipsave"
         minSdk = 26
         targetSdk = 35
         versionCode = 102
