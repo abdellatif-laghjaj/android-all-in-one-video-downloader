@@ -2,6 +2,7 @@ package com.abdellatif.clipsave.ui.paste
 
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -10,8 +11,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
@@ -69,13 +73,24 @@ fun PasteUrlScreen(vm: AppViewModel) {
                     value = url,
                     onValueChange = { url = it },
                     modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(28.dp),
                     label = { Text("Media URL") },
                     placeholder = { Text("https://…") },
                     singleLine = false,
                     supportingText = platform?.let { { Text("Detected: ${it.displayName}") } },
                     trailingIcon = {
-                        IconButton(onClick = { url = readClipboard(context) }) {
-                            Icon(painterResource(R.drawable.paste), contentDescription = "Paste from clipboard")
+                        IconButton(
+                            onClick = { url = readClipboard(context) },
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(40.dp)
+                                .background(MaterialTheme.colorScheme.primary, CircleShape)
+                        ) {
+                            Icon(
+                                painterResource(R.drawable.paste),
+                                contentDescription = "Paste from clipboard",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
                         }
                     }
                 )

@@ -1,3 +1,5 @@
+[![Stand With Palestine](https://raw.githubusercontent.com/TheBSD/StandWithPalestine/main/banner-no-action.svg)](https://thebsd.github.io/StandWithPalestine)
+
 # ClipSave
 
 ![GitHub Downloads](https://img.shields.io/github/downloads/abdellatif-laghjaj/android-all-in-one-video-downloader/total.svg)
