@@ -5,6 +5,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.abdellatif.clipsave.R
 
 private val Figtree = FontFamily(
@@ -18,22 +19,41 @@ private val Figtree = FontFamily(
 )
 
 private fun TextStyle.figtree() = copy(fontFamily = Figtree)
-private val DefaultTypography = Typography()
+private val Default = Typography()
 
-val ClipSaveTypography = DefaultTypography.copy(
-    displayLarge = DefaultTypography.displayLarge.figtree(),
-    displayMedium = DefaultTypography.displayMedium.figtree(),
-    displaySmall = DefaultTypography.displaySmall.figtree(),
-    headlineLarge = DefaultTypography.headlineLarge.figtree(),
-    headlineMedium = DefaultTypography.headlineMedium.figtree(),
-    headlineSmall = DefaultTypography.headlineSmall.figtree(),
-    titleLarge = DefaultTypography.titleLarge.figtree(),
-    titleMedium = DefaultTypography.titleMedium.figtree(),
-    titleSmall = DefaultTypography.titleSmall.figtree(),
-    bodyLarge = DefaultTypography.bodyLarge.figtree(),
-    bodyMedium = DefaultTypography.bodyMedium.figtree(),
-    bodySmall = DefaultTypography.bodySmall.figtree(),
-    labelLarge = DefaultTypography.labelLarge.figtree(),
-    labelMedium = DefaultTypography.labelMedium.figtree(),
-    labelSmall = DefaultTypography.labelSmall.figtree()
+/** Figtree everywhere; headlines tightened, labels slightly tracked for a premium feel. */
+val ClipSaveTypography = Default.copy(
+    displayLarge = Default.displayLarge.figtree().copy(
+        fontWeight = FontWeight.Bold, letterSpacing = (-1).sp
+    ),
+    displayMedium = Default.displayMedium.figtree().copy(
+        fontWeight = FontWeight.Bold, letterSpacing = (-0.8).sp
+    ),
+    displaySmall = Default.displaySmall.figtree().copy(
+        fontWeight = FontWeight.Bold, letterSpacing = (-0.6).sp
+    ),
+    headlineLarge = Default.headlineLarge.figtree().copy(
+        fontWeight = FontWeight.Bold, letterSpacing = (-0.6).sp
+    ),
+    headlineMedium = Default.headlineMedium.figtree().copy(
+        fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp
+    ),
+    headlineSmall = Default.headlineSmall.figtree().copy(
+        fontWeight = FontWeight.Bold, letterSpacing = (-0.4).sp
+    ),
+    titleLarge = Default.titleLarge.figtree().copy(
+        fontWeight = FontWeight.SemiBold, letterSpacing = (-0.3).sp
+    ),
+    titleMedium = Default.titleMedium.figtree().copy(
+        fontWeight = FontWeight.SemiBold, letterSpacing = (-0.1).sp
+    ),
+    titleSmall = Default.titleSmall.figtree().copy(fontWeight = FontWeight.SemiBold),
+    bodyLarge = Default.bodyLarge.figtree(),
+    bodyMedium = Default.bodyMedium.figtree(),
+    bodySmall = Default.bodySmall.figtree().copy(lineHeight = 18.sp),
+    labelLarge = Default.labelLarge.figtree().copy(fontWeight = FontWeight.SemiBold),
+    labelMedium = Default.labelMedium.figtree().copy(fontWeight = FontWeight.Medium),
+    labelSmall = Default.labelSmall.figtree().copy(
+        fontWeight = FontWeight.Medium, letterSpacing = 1.2.sp
+    )
 )

@@ -4,16 +4,21 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import com.abdellatif.clipsave.ClipSaveApp
-import com.abdellatif.clipsave.data.model.DownloadStatus
+import com.abdellatif.clipsave.data.model.DownloadFormat
+import com.abdellatif.clipsave.data.model.MediaType
 import com.abdellatif.clipsave.data.preferences.AccessMode
 import com.abdellatif.clipsave.data.preferences.Settings
 import com.abdellatif.clipsave.data.preferences.ThemeMode
 import com.abdellatif.clipsave.download.DownloadService
+import com.abdellatif.clipsave.download.YtDlpEngine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AppViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -24,10 +29,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     val downloads = repo.downloads
     val settings = prefs.settings.stateIn(viewModelScope, SharingStarted.Eagerly, Settings())
 
-    fun download(
-        url: String,
-        format: com.abdellatif.clipsave.data.model.DownloadFormat = com.abdellatif.clipsave.data.model.DownloadFormat.BEST
-    ) {
+    fun download(url: String, format: DownloadFormat = DownloadFormat.BEST) {
         val clean = url.trim()
         if (clean.isBlank()) return
         DownloadService.start(getApplication(), clean, format)
@@ -35,15 +37,15 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun retry(id: String) {
         val item = repo.get(id) ?: return
-        val fmt = if (item.mediaType == com.abdellatif.clipsave.data.model.MediaType.AUDIO)
-            com.abdellatif.clipsave.data.model.DownloadFormat.AUDIO_M4A
-        else com.abdellatif.clipsave.data.model.DownloadFormat.BEST
-        DownloadService.start(getApplication(), item.url, fmt, retryId = id)
+        val format =
+            if (item.mediaType == MediaType.AUDIO) DownloadFormat.AUDIO_M4A
+            else DownloadFormat.BEST
+        DownloadService.start(getApplication(), item.url, format, retryId = id)
     }
 
     fun updateEngine(onResult: (String) -> Unit) = viewModelScope.launch {
-        val msg = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-            com.abdellatif.clipsave.download.YtDlpEngine.update(getApplication(), force = true)
+        val msg = withContext(Dispatchers.IO) {
+            YtDlpEngine.update(getApplication(), force = true)
         }
         onResult(msg)
     }
@@ -56,18 +58,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun setAccessMode(mode: AccessMode) = viewModelScope.launch { prefs.setAccessMode(mode) }
     fun completeOnboarding() = viewModelScope.launch { prefs.setOnboardingDone(true) }
 
-    val activeCount
-        get() = downloads.value.count {
-            it.status == DownloadStatus.DOWNLOADING || it.status == DownloadStatus.EXTRACTING || it.status == DownloadStatus.QUEUED
-        }
-
     companion object {
         val Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: androidx.lifecycle.viewmodel.CreationExtras
-            ): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val app =
                     extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
                 return AppViewModel(app) as T

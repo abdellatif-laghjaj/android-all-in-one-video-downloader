@@ -9,6 +9,7 @@ import android.os.IBinder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import com.abdellatif.clipsave.ClipSaveApp
 import com.abdellatif.clipsave.data.model.Download
@@ -33,6 +34,8 @@ class DownloadService : Service() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val active = AtomicInteger(0)
+    @Volatile
+    private var lastNotified = 0L
     private lateinit var repo: DownloadRepository
 
     override fun onCreate() {
@@ -48,7 +51,9 @@ class DownloadService : Service() {
         val format =
             runCatching { DownloadFormat.valueOf(formatName) }.getOrDefault(DownloadFormat.BEST)
         if (url.isNullOrBlank()) {
-            stopIfIdle(); return START_NOT_STICKY
+            // Nothing was queued for this intent — only stop if no download is in flight.
+            if (active.get() <= 0) stopServiceNow()
+            return START_NOT_STICKY
         }
         active.incrementAndGet()
         scope.launch { runDownload(url, format, retryId) }
@@ -195,6 +200,11 @@ class DownloadService : Service() {
     }
 
     private fun updateForeground(title: String, progress: Int) {
+        // Progress callbacks fire on every percent; posting the notification that often
+        // just gets rate-limited by the system. Throttle to ~4 updates/second.
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (progress in 1..99 && now - lastNotified < 250) return
+        lastNotified = now
         runCatching {
             val n = NotificationHelper.progressNotification(this, title, progress)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -210,9 +220,17 @@ class DownloadService : Service() {
     }
 
     private fun stopIfIdle() {
-        if (active.decrementAndGet() <= 0) {
-            stopForeground(STOP_FOREGROUND_REMOVE); stopSelf()
-        }
+        if (active.decrementAndGet() <= 0) stopServiceNow()
+    }
+
+    private fun stopServiceNow() {
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
+
+    override fun onDestroy() {
+        scope.cancel()
+        super.onDestroy()
     }
 
     private fun guessType(ext: String): MediaType = when (ext.lowercase()) {
