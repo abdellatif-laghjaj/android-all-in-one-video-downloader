@@ -34,6 +34,8 @@ class MainActivity : ComponentActivity() {
     private val requestNotif =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
+    private var pendingQuickGrab = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -49,9 +51,25 @@ class MainActivity : ComponentActivity() {
         handleIntent(intent)
     }
 
-    /** "Quick grab": triggered by the floating bubble — download whatever link is on the clipboard. */
+    /**
+     * "Quick grab": triggered by the floating bubble — download whatever link is on the
+     * clipboard. On Android 10+ the clipboard is only readable while our window has focus,
+     * so on a cold start we defer the grab until focus arrives.
+     */
     private fun handleIntent(intent: Intent?) {
         if (intent?.action != ACTION_QUICK_GRAB) return
+        if (hasWindowFocus()) performQuickGrab() else pendingQuickGrab = true
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus && pendingQuickGrab) {
+            pendingQuickGrab = false
+            performQuickGrab()
+        }
+    }
+
+    private fun performQuickGrab() {
         val clip = readClipboardUrl()
         if (clip != null) {
             DownloadService.start(this, clip, DownloadFormat.BEST)
