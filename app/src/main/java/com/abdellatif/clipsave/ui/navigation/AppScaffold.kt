@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -50,6 +51,19 @@ private enum class Tab(val route: String, val label: String, val icon: Int) {
 @Composable
 fun AppScaffold(vm: AppViewModel) {
     val navController = rememberNavController()
+
+    // All top-level moves (tabs AND in-screen shortcuts like the Home FAB) must use this
+    // single pattern. A plain navigate() would push a duplicate destination; popping it
+    // later with saveState collides with the tab's saved back-stack state and wedges the
+    // NavController, leaving taps on the start tab permanently ignored.
+    fun navigateToTab(tab: Tab) {
+        navController.navigate(tab.route) {
+            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
@@ -59,13 +73,7 @@ fun AppScaffold(vm: AppViewModel) {
                 selectedRoute = Tab.entries.firstOrNull { tab ->
                     current?.hierarchy?.any { it.route == tab.route } == true
                 }?.route,
-                onSelect = { tab ->
-                    navController.navigate(tab.route) {
-                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                onSelect = ::navigateToTab
             )
         }
     ) { padding ->
@@ -79,7 +87,7 @@ fun AppScaffold(vm: AppViewModel) {
             popExitTransition = { fadeOut(tween(180)) }
         ) {
             composable(Tab.HOME.route) {
-                HomeScreen(vm, onGoToPaste = { navController.navigate(Tab.PASTE.route) })
+                HomeScreen(vm, onGoToPaste = { navigateToTab(Tab.PASTE) })
             }
             composable(Tab.DOWNLOADS.route) { DownloadsScreen(vm) }
             composable(Tab.PASTE.route) { PasteUrlScreen(vm) }
@@ -124,6 +132,7 @@ private fun NavItem(tab: Tab, selected: Boolean, onClick: () -> Unit, modifier: 
     val interaction = remember { MutableInteractionSource() }
     Column(
         modifier = modifier
+            .fillMaxHeight()
             .clickable(interactionSource = interaction, indication = null, onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
